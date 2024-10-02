@@ -14,8 +14,6 @@ const CartItem = ({ onContinueShopping }) => {
             const { cost, quantity } = item
             const costFixed = parseInt(cost.split('$')[1])
 
-            console.log(costFixed, cost, quantity)
-
             totCost += costFixed * quantity
         })
         return totCost;
@@ -28,10 +26,15 @@ const CartItem = ({ onContinueShopping }) => {
 
 
     const handleIncrement = (item) => {
-        dispatch(updateQuantity({ name: item.name, quantity: item.quantity++ }))
+        console.log('entra', item, item.quantity)
+        console.log({ name: item.name, quantity: item.quantity+1 })
+        dispatch(updateQuantity({ name: item.name, quantity: item.quantity+1 }))
     };
 
     const handleDecrement = (item) => {
+        if(item.quantity === 1) return handleRemove(item)
+        dispatch(updateQuantity({ name: item.name, quantity: item.quantity-1 }))
+
     };
 
     const handleRemove = (item) => {
@@ -40,6 +43,10 @@ const CartItem = ({ onContinueShopping }) => {
 
     // Calculate total cost based on quantity for an item
     const calculateTotalCost = (item) => {
+        const { cost, quantity } = item
+        const costFixed = parseInt(cost.split('$')[1])
+
+        return costFixed * quantity
     };
 
     const handleCheckoutShopping = (e) => {
